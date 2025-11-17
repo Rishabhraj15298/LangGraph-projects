@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    volumes:
+      - ..:/workspace:cached
+
+    depends_on:
+      - mongodb
+
+    command: sleep infinity
+
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongodb_data:/data/db
+
+  valkey:
+    image: valkey/valkey
+    restart: always
+
+  vector-db:
+    image: qdrant/qdrant
+    restart: always
+    ports:
+      - "6333:6333"
+
+  neo4j:
+    image: neo4j:latest
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/reform-william-center-vibrate-press-5829
+      NEO4JLABS_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: 'apoc.*,apoc.meta.*'
+      NEO4J_dbms_security_procedures_allowlist: 'apoc.*,apoc.meta.*'
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_export_file_enabled: "true"
+    volumes:
+      - neo4j_data:/data
+
+volumes:
+  mongodb_data:
+  neo4j_data:

@@ -1,0 +1,35 @@
+{
+  "name": "LangGraph Python Workspace",
+
+  "dockerComposeFile": ["docker-compose.yaml"],
+  "service": "app",
+
+  "workspaceFolder": "/workspace",
+  "remoteUser": "root",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-python.flake8",
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-docker",
+        "mongodb.mongodb-vscode",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+      }
+    }
+  },
+
+  "postCreateCommand": "pip install -r /workspace/requirements.txt",
+
+  "remoteEnv": {
+    "PYTHONPATH": "/workspace"
+  }
+}
